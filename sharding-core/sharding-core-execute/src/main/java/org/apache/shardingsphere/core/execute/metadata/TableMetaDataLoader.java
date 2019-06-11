@@ -34,12 +34,7 @@ import org.apache.shardingsphere.spi.database.DataSourceMetaData;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -70,6 +65,9 @@ public final class TableMetaDataLoader {
      * @throws SQLException SQL exception
      */
     public TableMetaData load(final String logicTableName, final ShardingRule shardingRule) throws SQLException {
+        if(!isCheckingMetaData){
+            return new TableMetaData(new ArrayList<ColumnMetaData>());
+        }
         List<TableMetaData> actualTableMetaDataList = load(getDataNodeGroups(logicTableName, shardingRule), shardingRule.getShardingDataSourceNames());
         checkUniformed(logicTableName, actualTableMetaDataList);
         return actualTableMetaDataList.iterator().next();
